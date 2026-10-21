@@ -28,5 +28,12 @@ jobs:
       run: chmod +x gradlew
 
     # Legacy Forge tasks require a headless frame buffer (xvfb) to accommodate vintage Gradle setups
-    - name: Build with Gradle
+    - name: Build with Vintage Gradle
       run: xvfb-run ./gradlew build
+
+    # Saves the compiled .jar file to your GitHub Action run outputs
+    - name: Upload Compiled Mod Jar Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: MinibloxTranslationLayerMod-Jar
+        path: build/libs/*.jar
