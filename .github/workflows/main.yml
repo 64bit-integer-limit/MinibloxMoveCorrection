@@ -23,18 +23,10 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
-        cache: 'gradle'
 
     - name: Grant Execute Permission for Gradle Wrapper
       run: chmod +x gradlew
 
-    # Legacy Forge tasks sometimes check for visual environment elements or throw minor headless errors.
-    # Using xvfb ensures clean building on headless Linux runners.
+    # Legacy Forge tasks require a headless frame buffer (xvfb) to accommodate vintage Gradle setups
     - name: Build with Gradle
       run: xvfb-run ./gradlew build
-
-    - name: Upload Compiled Mod Jar Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: MinibloxTranslationLayerMod-Jar
-        path: build/libs/*.jar
