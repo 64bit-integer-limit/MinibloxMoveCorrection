@@ -1,0 +1,40 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # ForgeGradle 2.1 / Minecraft 1.8.9 requires exactly Java 8 to compile successfully
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+        cache: 'gradle'
+
+    - name: Grant Execute Permission for Gradle Wrapper
+      run: chmod +x gradlew
+
+    # Legacy Forge tasks sometimes check for visual environment elements or throw minor headless errors.
+    # Using xvfb ensures clean building on headless Linux runners.
+    - name: Build with Gradle
+      run: xvfb-run ./gradlew build
+
+    - name: Upload Compiled Mod Jar Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: MinibloxTranslationLayerMod-Jar
+        path: build/libs/*.jar
