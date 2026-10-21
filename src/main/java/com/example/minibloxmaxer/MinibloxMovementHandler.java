@@ -14,7 +14,7 @@ public class MinibloxMovementHandler {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.PRE && event.player == mc.thePlayer && mc.thePlayer != null) {
+        if (event.phase == TickEvent.Phase.START && event.player == mc.thePlayer && mc.thePlayer != null) {
             try {
                 String packetName = "PlayerPositionAndRotation";
                 String jsonData = String.format(Locale.US, 
